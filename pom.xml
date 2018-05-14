@@ -83,11 +83,26 @@
             <version>${spring.version}</version>
             <scope>test</scope>
         </dependency>
+
+
+        <!-- Default persistence functions -->
+
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-data-jpa</artifactId>-->
+            <!--<version>${spring.version}</version>-->
+        <!--</dependency>-->
+        <!-- JPA back-end -->
         <dependency>
-            <groupId>com.github.miwurster</groupId>
-            <artifactId>spring-data-influxdb</artifactId>
-            <version>1.7</version>
+            <groupId>org.influxdb</groupId>
+            <artifactId>influxdb-java</artifactId>
+            <version>2.10</version>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.hibernate</groupId>-->
+            <!--<artifactId>hibernate-java8</artifactId>-->
+            <!--<version>5.0.5.Final</version>-->
+        <!--</dependency>-->
     </dependencies>
 
     <build>
