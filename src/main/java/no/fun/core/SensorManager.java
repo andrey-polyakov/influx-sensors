@@ -1,6 +1,6 @@
 package no.fun.core;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Implementations manage multiple sensors of one kind.
@@ -27,7 +27,7 @@ public interface SensorManager<T, V> {
      * Automatic probing logic to be implemented here.
      * @return list of detected sensor addresses
      */
-    List<T> autoDetect();
+     void autoDetect();
 
     /**
      * Polls given sensor.
@@ -36,4 +36,6 @@ public interface SensorManager<T, V> {
      * @return reading
      */
     V getReadings(T id);
+
+    Set<T> getKeys();
 }

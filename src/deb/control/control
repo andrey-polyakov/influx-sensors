@@ -1,0 +1,8 @@
+Package: [[name]]
+Version: [[version]]
+Section: misc
+Priority: low
+Architecture: all
+Description: [[description]]
+Maintainer: "Andrey Polyakov" <Andrey.Polyakov@unix.net>
+Depends: oracle-java8-installer

@@ -1,0 +1,13 @@
+[Unit]
+Description=Sensor Readings Collector Service
+After=network.target
+
+[Service]
+StandardOutput=null
+PIDFile=/run/sensoryd.pid
+ExecStart=/usr/lib/sensory/scripts/sensoryd.sh start
+ExecStop=/usr/lib/sensory/scripts/sensoryd.sh stop
+
+[Install]
+WantedBy=multi-user.target
+Alias=sensory.service

@@ -2,21 +2,17 @@ package no.fun.core.bme280;
 
 import com.diozero.devices.BME280;
 import com.diozero.util.RuntimeIOException;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import no.fun.core.I2cId;
 import no.fun.core.SensorManager;
 import no.fun.core.exceptions.ConfigurationError;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -25,7 +21,6 @@ import java.util.stream.Stream;
  * Manages I2C based BME280 sensors.
  */
 @Slf4j
-@Component
 public class BME280Manager implements SensorManager<I2cId, BME280Readings> {
     private final Map<I2cId, BME280> sensors = new ConcurrentHashMap<>();
 
@@ -48,7 +43,7 @@ public class BME280Manager implements SensorManager<I2cId, BME280Readings> {
         }
         for (Path name : p.collect(Collectors.toList())) {
             try {
-                buses.add(new Integer(name.getName(-1).toString().split("-")[1]));
+                buses.add(new Integer(name.getName(name.getNameCount() - 1).toString().split("-")[1]));
             } catch (NumberFormatException n) {
                 log.error("Failed to extract I2C bus number from its file name {}", name.getFileName().toString());
             }
@@ -58,12 +53,18 @@ public class BME280Manager implements SensorManager<I2cId, BME280Readings> {
 
     @Override
     public void addSensor(I2cId id) {
+        BME280 device = null;
         try {
-            sensors.putIfAbsent(id, new BME280(id.getBus(), id.getAddress()));
+            device = new BME280(id.getBus(), id.getAddress());
+            sensors.putIfAbsent(id, device);
             log.info("Successfully added a BME280 at {}", id.toString());
         } catch (LinkageError le) {
+            if (device != null)
+                device.close();
             throw new ConfigurationError("SMBUS may not installed or configured on this system");
         } catch (RuntimeIOException e) {
+            if (device != null)
+                device.close();
             throw new ConfigurationError("No sensor at given address");
         }
     }
@@ -82,9 +83,9 @@ public class BME280Manager implements SensorManager<I2cId, BME280Readings> {
      */
     @PostConstruct
     @Override
-    public List<I2cId> autoDetect() {
-        List<I2cId> validAddresses = new LinkedList<>();
+    public void autoDetect() {
         for (int bus : scanAdapters()) {
+            log.info("Probing I2C bus #{}", bus);
             for (int address = 1; address < 128; address++) {
                 try {
                     addSensor(new I2cId(bus, address));
@@ -93,7 +94,7 @@ public class BME280Manager implements SensorManager<I2cId, BME280Readings> {
                 }
             }
         }
-        return validAddresses;
+        log.info("Discovered total of {} devices", sensors.size());
     }
 
     @Override
@@ -103,6 +104,11 @@ public class BME280Manager implements SensorManager<I2cId, BME280Readings> {
             return null;
         }
         return new BME280Readings(id.toString(), s.getValues());
+    }
+
+    @Override
+    public Set<I2cId> getKeys() {
+        return sensors.keySet();
     }
 
 }

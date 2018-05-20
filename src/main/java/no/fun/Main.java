@@ -23,7 +23,6 @@ public class Main extends WebMvcConfigurerAdapter {
         registry.addInterceptor(new LoggingInterceptor()).addPathPatterns("/**");
     }
 
-
     @Bean
     public Docket docket() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -36,7 +35,8 @@ public class Main extends WebMvcConfigurerAdapter {
     }
 
     private ApiInfo generateApiInfo() {
-        return new ApiInfo("BME280 readings collector", "This is API description for microservice collecting sensor readings", "0.0",
+        return new ApiInfo("BME280 readings collector",
+                "This is API description for microservice collecting sensor readings", "0.0",
                 "NONE", "andrey.polyakov@unix.net", "NONE", "-");
     }
 
