@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import no.fun.core.I2cId;
 import no.fun.core.SensorManager;
 import no.fun.core.exceptions.ConfigurationError;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.nio.file.Files;
@@ -21,6 +22,7 @@ import java.util.stream.Stream;
  * Manages I2C based BME280 sensors.
  */
 @Slf4j
+@Component
 public class BME280Manager implements SensorManager<I2cId, BME280Readings> {
     private final Map<I2cId, BME280> sensors = new ConcurrentHashMap<>();
 

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Set;
 
 @Api(value="SENSORS", description="Allow manipulations with sensors.")
 @RestController
@@ -28,9 +29,12 @@ public class Sensors {
 
     @GetMapping("{bus}-{address}")
     public BME280Readings read(@Valid @PathVariable Integer bus, @Valid @PathVariable Integer address) {
-
         return sensorManager.getReadings(new I2cId(bus, address));
     }
 
+    @GetMapping()
+    public Set<I2cId> getAddresses() {
+        return sensorManager.getKeys();
+    }
 
 }

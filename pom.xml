@@ -184,16 +184,43 @@
                                     <type>file</type>
                                     <mapper>
                                         <type>perm</type>
-                                        <prefix>/usr/bin</prefix>
+                                        <prefix>usr/lib/${project.artifactId}</prefix>
                                         <filemode>755</filemode>
                                     </mapper>
                                 </data>
                                 <data>
-                                    <src>${project.basedir}/target/${project.build.finalName}.jar</src>
+                                    <src>${basedir}/src/deb/usr/etc/${project.artifactId}/application.properties</src>
                                     <type>file</type>
                                     <mapper>
                                         <type>perm</type>
-                                        <prefix>usr/lib/${project.artifactId}</prefix>
+                                        <prefix>usr/etc/${project.artifactId}</prefix>
+                                        <filemode>755</filemode>
+                                    </mapper>
+                                </data>
+                                <data>
+                                    <src>${basedir}/src/deb/usr/etc/${project.artifactId}/logback-spring.xml</src>
+                                    <type>file</type>
+                                    <mapper>
+                                        <type>perm</type>
+                                        <prefix>usr/etc/${project.artifactId}</prefix>
+                                        <filemode>755</filemode>
+                                    </mapper>
+                                </data>
+                                <data>
+                                    <src>${basedir}/src/deb/usr/lib/${project.artifactId}/scripts/sensoryd.sh</src>
+                                    <type>file</type>
+                                    <mapper>
+                                        <type>perm</type>
+                                        <prefix>usr/lib/${project.artifactId}/scripts</prefix>
+                                        <filemode>755</filemode>
+                                    </mapper>
+                                </data>
+                                <data>
+                                    <src>${basedir}/src/deb/usr/lib/systemd/system/sensory.service</src>
+                                    <type>file</type>
+                                    <mapper>
+                                        <type>perm</type>
+                                        <prefix>lib/systemd/system</prefix>
                                         <filemode>755</filemode>
                                     </mapper>
                                 </data>
@@ -204,6 +231,7 @@
                                         <path>usr/lib/${project.artifactId}</path>
                                         <path>usr/lib/${project.artifactId}/scripts</path>
                                         <path>var/log/${project.artifactId}</path>
+                                        <path>var/log/${project.artifactId}/archived</path>
                                     </paths>
                                     <mapper>
                                         <type>perm</type>
