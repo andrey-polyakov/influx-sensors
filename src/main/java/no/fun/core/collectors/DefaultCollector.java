@@ -61,7 +61,7 @@ public class DefaultCollector implements Collector {
                         } catch (Exception e) {
                             log.warn("Embedded DB write failed",e);
                         }
-                    }, 0, 1, TimeUnit.SECONDS));
+                    }, 0, 5, TimeUnit.SECONDS));
         }
         log.info("Collector initialized");
     }

@@ -5,8 +5,11 @@ After=network.target
 [Service]
 StandardOutput=null
 PIDFile=/run/sensoryd.pid
-ExecStart=/usr/lib/sensory/scripts/sensoryd.sh restart
+ExecStart=/usr/lib/sensory/scripts/sensoryd.sh start
 ExecStop=/usr/lib/sensory/scripts/sensoryd.sh stop
+Restart=on-abnormal
+RestartSec=60s
+Type=forking
 
 [Install]
 WantedBy=multi-user.target

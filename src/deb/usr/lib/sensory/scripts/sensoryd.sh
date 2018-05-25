@@ -1,15 +1,14 @@
 #!/bin/sh
-SERVICE_NAME=sensory
-PATH_TO_JAR=/usr/lib/sensory/sensory-0.0.1.jar
-PID_PATH_NAME=/run/sensory.pid
+SERVICE_NAME="Sensory daemon"
+PATH_TO_JAR=/usr/lib/sensory/sensoryd.jar
+PID_PATH_NAME=/run/sensoryd.pid
 APP_CONFIG_NAME=/usr/etc/sensory/application.properties
 
 case $1 in
     start)
         echo "Starting $SERVICE_NAME ..."
         if [ ! -f $PID_PATH_NAME ]; then
-            nohup java -jar $PATH_TO_JAR --spring.config.location=file:$APP_CONFIG_NAME >> /dev/null >> /dev/null &
-                        echo $! > $PID_PATH_NAME
+            nohup java -jar $PATH_TO_JAR --spring.config.location=file:$APP_CONFIG_NAME >> /dev/null >> /dev/null & echo $! > $PID_PATH_NAME
             echo "$SERVICE_NAME started ..."
         else
             echo "$SERVICE_NAME is already running ..."
